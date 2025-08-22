@@ -1,1 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 4: Web-based Mapping Using OpenLayers</title>
+	<script src="https://cdn.jsdelivr.net/npm/ol@v8.1.0/dist/ol.js"></script> 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.1.0/ol.css">
+	<link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/src/ol-layerswitcher.css"/>
+    <link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/examples/layerswitcher.css" />
+    <script src="https://rawgit.com/walkermatt/ol-layerswitcher/master/dist/ol-layerswitcher.js"></script>
+    <style>
+        #map {
+            width: 800px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+
+<h3>Lab 3: Web-based Mapping Using OpenLayers</h3>
+<h4>Author: Tuyen Truong</h4>
+<div id="map" class="map"></div>
+
+<script>
+    var OSM = new ol.layer.Tile({
+        title: 'Open Street Map',
+        type: 'base',
+        visible: true,
+        source: new ol.source.OSM()
+    });
+	
+				
+    var bing = new ol.layer.Tile({
+        title: 'Bing Map',
+        type: 'base',
+        visible: false,
+        source: new ol.source.BingMaps({
+            key: 'AvaGM7j2D9gs32ETYZ6JRReFZb8sdB8mXJTKUfzoNIXH_wYwBa03sDOQ54_ci_ZI',
+            imagerySet: 'Aerial'
+        })
+    });
+
+var state_boundaries = new ol.layer.Tile({
+        title: 'state boundaries',
+        visible: true,
+        source: new ol.source.TileWMS({
+            url: 'http://jade.uncc.edu:8080/geoserver/wms',
+            params: {'LAYERS': 'topp:tasmania_state_boundaries', 'TILED': true},
+            serverType: 'geoserver',
+            transition: 0
+        })
+    });
+
+ 
+ var water_bodies = new ol.layer.Tile({
+        title: 'water bodies',
+        visible: true,
+        source: new ol.source.TileWMS({
+            url: 'http://jade.uncc.edu:8080/geoserver/wms',
+            params: {'LAYERS': 'topp:tasmania_water_bodies', 'TILED': true},
+            serverType: 'geoserver',
+            transition: 0
+        })
+    });
+
+ 
+
+var roads = new ol.layer.Tile({
+        title: 'roads',
+        visible: true,
+        source: new ol.source.TileWMS({
+            url: 'http://jade.uncc.edu:8080/geoserver/wms',
+            params: {'LAYERS': 'topp:tasmania_roads', 'TILED': true},
+            serverType: 'geoserver',
+            transition: 0
+        })
+    });
+
+
+var cities = new ol.layer.Tile({
+        title: 'cities',
+        visible: true,
+        source: new ol.source.TileWMS({
+            url: 'http://jade.uncc.edu:8080/geoserver/wms',
+            params: {'LAYERS': 'topp:tasmania_cities', 'TILED': true},
+            serverType: 'geoserver',
+            transition: 0
+        })
+    });
+
+  var map = new ol.Map({
+        target: 'map',
+        //layers: [OSM, bing, state_boundaries, water_bodies, roads, cities],//
+		layers: [OSM, bing,state_boundaries],
+        view: new ol.View({
+		//projection: 'EPSG:3857'
+        center: ol.proj.fromLonLat([146.70293067245578,-41.959203469757824]), //          
+		
+		zoom: 6
+        })
+    });
+
+
+
+
+
+    var layerSwitcher = new ol.control.LayerSwitcher({
+        tipLabel: 'Legend' // Optional label for button
+    });
+
+    map.addControl(layerSwitcher);
+</script>
+
+</body>
+</html>
 
