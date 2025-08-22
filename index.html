@@ -1,0 +1,306 @@
+<html>
+<head>
+<title>Web GIS</title>
+    <script src="./OpenLayers.js"></script>
+    <script type="text/javascript">
+        var map;
+        // avoid pink tiles
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
+        OpenLayers.Util.onImageLoadErrorColor = "transparent";
+
+        function init(){
+           	//add graticule to the map
+			graticuleCtl = new OpenLayers.Control.Graticule({
+                    labelled: true,
+                    targetSize: 200
+                });
+			//configure the map
+			options={
+				controls: [
+					graticuleCtl,
+					new OpenLayers.Control.Navigation(),
+					new OpenLayers.Control.PanPanel(),
+					new OpenLayers.Control.ZoomPanel(),
+					new OpenLayers.Control.ScaleLine(),
+					new OpenLayers.Control.OverviewMap()
+				]
+			};
+            // construct a map with the above options
+            map = new OpenLayers.Map('map', options);
+  					
+	    	var map_osm         = new OpenLayers.Layer.OSM();
+            
+			var proj1=new OpenLayers.Projection("EPSG:4326");
+			var proj2=new OpenLayers.Projection("EPSG:900913");
+			var lat=35.307095;
+			var lon=-80.730008;
+			var zoom=10;
+			var center=new OpenLayers.LonLat(lon,lat).transform(proj1,proj2);
+			var center1=new OpenLayers.LonLat(lon,lat);
+			var markers = new OpenLayers.Layer.Markers( "We Are Here" );
+			markers.addMarker(new OpenLayers.Marker(center));
+
+			// add the created layers to the map
+            map.addLayers([map_osm,markers]);
+            //map.addControl(new OpenLayers.Control.LayerSwitcher());
+            map.addControl(new OpenLayers.Control.MousePosition());
+			var external_control = new OpenLayers.Control.LayerSwitcher({
+				div: document.getElementById('external_control') });
+			map.addControl(external_control);
+            //map.zoomToExtent(unccBounds);
+			map.setCenter(center,zoom);
+        }
+    </script>
+</head>
+
+<body bgcolor="#E0F2F7" onload="init()">
+<h1>GEOG4180/5180: Web GIS</h1>
+<h2>Fall 2024</h2>
+<p>
+<h3>Course Objectives</h3>
+The goal of this course is to introduce the basic knowledge of, and advance in, Web/Internet GIS. It covers principles, methods, and applications of Web- or Internet-based GIS. Through hands-on laboratory exercises students will develop the skill necessary to use Web GIS software packages for conducting GIS data operations (including query and mapping) and spatial analysis/modeling via Internet.
+</p>
+<p>
+<h3>Instructor</h3>
+Dr. Wenwu Tang</br>
+Email: <a href="mailto:WenwuTang@uncc.edu ">WenwuTang@uncc.edu</a></br>
+Office: 302 McEniry
+Office Hour: 12:00pM-1:00PM TR (or by appointment)
+</p>
+
+
+<p> <h3>Syllabus (<a href="syllabus-WebGIS.pdf" target="_blank">pdf</a>)</h3>
+</p>
+<!-- Lecture section -->
+<p>
+<h3>Lecture</h3>
+<table border="1">
+<tr>
+<th>Lecture</th>
+<th>Content</th>
+</tr>
+<tr>
+<td>1</td>
+<td><a href="lecture/lecture1_introduction.pptx" target="_blank">Introduction</a> </td>
+</tr>
+
+<tr>
+<td>2</td>
+<td><a href="lecture/lecture2_network.pptx" target="_blank">Networking Fundamentals</a> </td>
+</tr>
+
+<tr>
+<td>3</td>
+<td><a href="lecture/lecture3_client_server.pptx" target="_blank">Client-Server Architecture</a> </td>
+</tr>
+
+<tr>
+<td>4</td>
+<td><a href="lecture/lecture4_web_mapping.pptx" target="_blank">Web Mapping</a> </td>
+</tr>
+
+<tr>
+<td>5</td>
+<td><a href="lecture/lecture5_distributed_GIServices.pptx" target="_blank">Distributed GIServices</a></td>
+</tr>
+
+<tr>
+<td>6</td>
+<td><a href="lecture/lecture6_standards_GIServices.pptx" target="_blank">Standards for Distributed GIServices </a></td>
+</tr>
+
+<tr>
+<td>7</td>
+<td><a href="lecture/lecture7_GML_KML.pptx" target="_blank">Geospatial Markup Language </a> </td>
+</tr>
+
+<tr>
+<td>8</td>
+<td><a href="lecture/lecture8_WebGISPackages.pptx" target="_blank">Web GIS Software Packages </a> </td>
+</tr>
+
+<tr>
+<td>9</td>
+<td><a href="lecture/lecture9_mobile.pptx" target="_blank">Mobile GIS</a> </td>
+</tr>
+
+<tr>
+<td>10</td>
+<td><a href="lecture/lecture10_CyberGIS.pptx" target="_blank">CyberGIS: Cyberinfrastructure-enabled GIS</a> </td>
+</tr>
+
+<tr>
+<td>11</td>
+<td><a href="lecture/lecture11_cloudcomputing.pptx" target="_blank">Spatial Cloud Computing</a> </td>
+</tr>
+<!--
+-->
+
+</table>
+
+
+<!-- Lab section -->
+<p>
+<h3>Lab</h3>
+<table border="1">
+<tr>
+<th>Lab</th>
+<th>Due Date</th>
+</tr>
+
+<tr>
+<td><a href="lab/Lab1.pdf" target="_blank">Lab 1: Web Mapping: Basics</td>
+<td>9/23/2024 </a> </td>
+</tr>
+
+<tr>
+<td><a href="lab/Lab2.pdf" target="_blank">Lab 2: Web Mapping: Medium</td>
+<td>10/21/2024 </a> </td>
+</tr>
+
+<tr>
+<td><a href="lab/Lab3.pdf" target="_blank">Lab 3: Web Mapping: Advanced</td>
+<td>11/11/2024 (extended)</a> </td>
+</tr>
+
+<tr>
+<td><a href="lab/Lab4.pdf" target="_blank">Lab 4: Server-side Web GIS: Vector Data</td>
+<td>11/18/2024</a> </td>
+
+</tr>
+<td><a href="lab/Lab5.pdf" target="_blank">Lab 5: Server-side Web GIS: Raster Data</td>
+<td>11/22/2024 </a> </td>
+</tr>
+
+<tr>
+<td><a href="lab/Lab6.pdf" target="_blank">Lab 6: Web GIS Portal: Build Your Own Web GIS Portal</td>
+<td>12/02/2024</a> </td>
+</tr>
+
+<tr>
+<td><a href="lab/Lab7.pdf" target="_blank">Lab 7: Cloud GIS: Build Your Own Web GIS Portal</td>
+<td>12/06/2022</a> </td>
+</tr>
+<!--
+-->
+</table>
+*** A template for lab reports <a href="lab/Lab_template.docx" target="_blank"> download </a> or here:<br> 
+
+<br>
+</p>
+
+
+
+<h3>Events</h3>
+<!--
+* <b>Final Project</b> Due Date: <u>TBA</u><br>
+* <b>Final Exam</b> Date: <u>TBA (our classroom)</u><br>
+* <b>Potential Project Topics </b> <a href="project/project_topics.pptx" target="_blank"> download </a> Project Abstract Due: MM/DD/Year<br>
+-->
+* <b>Appendix of Google Map API </b> <a href="lab/Appendix-GoogleAPI.pdf" target="_blank"> download </a><br>
+* <b> Web GIS Course Google Drive Folder</b> <a href="https://drive.google.com/drive/folders/18QMq8t-5HFbnPcN7ctvXLs8GhRSUp12L?usp=sharing" target="_blank"> Go To </a><br>
+* <b>Our University's virtual computing lab  </b> <a href="https://apporto.uncc.edu" target="_blank"> Apporto </a><br>
+
+
+<p>
+<h3>Useful Links</h3>
+<h4>Web GIS: Application: Generic</h4>
+* <a href="https://google.org/crisismap/2018-florence"  target="_blank"> Google Web GIS Portal of Hurricane Florence</a> (web interfaces of other extreme events are also available)<br>
+* <a href="http://data.unep-wcmc.org/datasets/21"  target="_blank"> Global Distribution of Sea Turtle Feeding Sites</a>: United Nations Environment Programme (UNEP)<br>
+* <a href="https://radar.jpl.nasa.gov/science/applications/"  target="_blank"> Radar Science & Engineering applications</a>: NASA Jet Propulsion Laboratory<br>
+* <a href="http://www.charlottecentercity.org/"  target="_blank"> Charlotte Center City</a>: A web-mapping portal showcasing the City of Charlotte<br>
+* <a href="http://www.moovitapp.com/"  target="_blank"> Moovit</a>: Crowdsourced GIS for navigation and public transportation<br>
+* <a href="http://www.waze.com/"  target="_blank"> WAZE</a>: Community-based GIS for navigation and public transportation<br>
+* <a href="http://www.citysourced.com"  target="_blank"> City Sourced</a>: Real timne Mobile Civic Engagement Platform<br>
+* <a href="http://www.ij-healthgeographics.com/series/1476-072X-Gis"  target="_blank"> Web GIS in practice</a>: International Journal of Health Geographics<br>
+* <a href="http://www.bl.uk/maps/"  target="_blank"> British Library Maps</a>: Web-based Georeferencing based on Crowdsourcing Technologies<br>
+<!-- closed
+<a href="http://www.google.com/mapmaker"  target="_blank"> Google Map Maker </a>: Edit Google Map by Yourself!<br>
+-->
+* <a href="https://dataverse.harvard.edu/dataverse/earthquake_data"  target="_blank"> Haiti Earthquake GIS Data Portal</a>: from Harvard University<br>
+* <a href="https://www.nps.gov/yell/learn/photosmultimedia/webcams.htm"  target="_blank"> Yellowstone live Webcam</a><br>
+* <a href="http://mappingideas.sdsu.edu/mashup/"  target="_blank"> Mash Map Competition</a><br>
+* <a href="http://www.walkshed.org/"  target="_blank"> Walkshed</a><br>
+* <a href="http://www.google.com/glass/start/"  target="_blank"> Google Glass </a> (inactive)<br>
+* <a href="http://opengeofiction.net/"  target="_blank"> OpenGeoFiction </a> (Acknowledgement: Sam McNamara)<br>
+* <a href="http://maps.co.mecklenburg.nc.us/openmapping/apps.html"  target="_blank"> Mecklenburg County OpenMapping Portal</a><br>
+* <a href="https://www.mecknc.gov/luesa/gis/pages/onlineservices.aspx"  target="_blank"> Mecklenburg County Geospatial Information Services</a><br>
+* <a href="http://senseable.mit.edu/"  target="_blank"> MIT Senseable City Lab </a><br>
+* <a href="http://senseable.mit.edu/bos311/"  target="_blank"> Boston 3-1-1 Incident Reports from MIT Senseable City Lab</a><br>
+* <a href="http://hubcab.org/#13.00/40.7250/-73.9484"  target="_blank"> Hubcab:Exploring New York City Taxi Trails </a>from MIT Senseable City Lab<br>
+* <a href="http://www.opentopography.org/"  target="_blank"> OpenTopography </a> (based on ESRI Geoportal Server)<br>
+* <a href="https://www.worldwildlife.org/pages/explore-wwf-free-rivers-a-new-augmented-reality-app"  target="_blank"> WWF Free Rivers </a> Augmented Reality<br>
+* <a href="https://www.youtube.com/watch?v=WgCOTn80C8M"  target="_blank"> Augmented Reality GIS </a> Youtube<br>
+* <a href="https://arsandbox.ucdavis.edu/"  target="_blank"> Augmented Reality Sandbox </a><br>
+* <a href="https://gisgeography.com/gis-applications-uses/"  target="_blank"> 1000 GIS Applications & Uses </a><br>
+
+<h4>Web GIS: Technology</h4>
+* <a href="http://openlayers.org/"  target="_blank"> OpenLayers</a>: Open-source client-side Web GIS package<br>
+* <a href="http://geoext.org/"  target="_blank"> GeoExt</a>: JavaScript Toolkit for Rich Web Mapping Applications<br>
+* <a href="http://leafletjs.com/"  target="_blank"> Leaflet</a>: Another open-source client-side Web GIS package<br>
+* <a href="http://wiki.openstreetmap.org/wiki/OpenLayers"  target="_blank"> OpenLayers for OpenStreetMap</a>: Tutorial <br>
+* <a href="http://geoserver.org/"  target="_blank"> GeoServer</a>: Open-source server-side Web GIS package<br>
+* <a href="http://www.deegree.org/"  target="_blank"> Deegree</a>: Open-source server-side Web GIS package<br>
+<!-- inactive
+* <a href="https://gisolve2.cigi.uiuc.edu:8443/home/"  target="_blank"> GISolve 2 </a>: A geospatial science gateway<br>
+-->
+* <a href="http://www.maptube.org"  target="_blank"> MapTube</a>: A free online map tool<br>
+* <a href="http://www.openstreetmap.org/"  target="_blank"> OpenStreetMap</a>: A free editable map based on Web 2.0 technology<br>
+* <a href="http://www.opengeospatial.org/standards"  target="_blank"> OGC standards</a>: Open Geospatial Consortium<br>
+* <a href="http://www.google.com/fusiontables/Home/"  target="_blank"> Google Fusion Table</a> <br>
+* <a href="http://www.giscloud.com/"  target="_blank"> GIS Cloud</a>: Web GIS enabled by cloud computing<br>
+* <a href="https://www.w3schools.com/html/html5_geolocation.asp"  target="_blank"> HTML5 GeoLocation</a><br>
+* <a href="http://www.zoo-project.org/"  target="_blank"> Zoo WPS Platform</a><br>
+* <a href="http://geoservices.tamu.edu/Services/Geocode/"  target="_blank">  Online geocoding</a> (Texas A&M University)<br>
+* <a href="http://www.geo-fs.com/"  target="_blank"> GEFS online</a>: A free online flight simulator<br>
+* <a href="http://cesiumjs.org/"  target="_blank"> Cesium</a>: A open-source javascript-based 3D globe viewer<br>
+* <a href="http://marcneuwirth.com/blog/2012/06/24/creating-the-earth-with-d3-js/"  target="_blank"> D3 for 3D global viewer</a> <br>
+* <a href="http://kartograph.org/showcase/projections/#ortho"  target="_blank"> Kartograph</a>: Online mapping and 3D global viewer <br>
+* <a href="https://webworldwind.org/"  target="_blank"> Web World Wind</a>: Online 3D global viewer <br>
+* <a href="https://www.mapillary.com/"  target="_blank"> Mapillary</a>: Photo mapping <br>
+* <a href="http://mapnik.org/"  target="_blank"> Mapnik</a>: Rendering maps (tiling)<br>
+* <a href="https://switch2osm.org/serving-tiles/"  target="_blank"> Switch2OSM</a>: OpenStreetMap Tiling (build your own tile servers))<br>
+* <a href="https://github.com/Esri/geoportal-server"  target="_blank"> ESRI Geoportal Server</a>: A standards-based open-source Web GIS product<br>
+* <a href="http://gptogc.esri.com/geoportal/"  target="_blank"> Sandbox Web Site for ESRI Geoportal Server</a><br>
+* <a href="http://geonode.org/"  target="_blank"> GeoNode</a>: Open Source Geospatial Content Management Systems<br>
+* <a href="https://live.osgeo.org/en/overview/overview.html"  target="_blank"> OSGeoLive</a>: List of Open-source GIS (including Web GIS)<br>
+* <a href="https://geonetwork-opensource.org/"  target="_blank"> GeoNetwork</a>: Open Source Geospatial Catalog Management<br>
+* <a href="https://github.com/geosolutions-it/MapStore2"  target="_blank"> MapStore2</a>: Open Source Web GIS framework for publishing maps<br>
+* <a href="https://github.com/tomchadwin/qgis2web"  target="_blank"> qgis2web</a>: QGIS plugin to create OpenLayers or Leaflet web maps<br>
+* <a href="https://kepler.gl/"  target="_blank"> Kepler.gl</a>: Open-source geospatial analysis tool (used by Uber)<br>
+
+<h4>Computing</h4>
+* <a href="https://marko-knoebl.github.io/slides/"  target="_blank"> Slides for Programming Courses</a><br>
+* <a href="http://www.ee.surrey.ac.uk/Teaching/Unix/"  target="_blank"> Linux Tutorial for Beginners</a><br>
+* <a href="http://www.w3schools.com/html/"  target="_blank"> HTML Tutorial</a><br>
+* <a href="http://www.w3schools.com/js/"  target="_blank"> Javascript Tutorial</a><br>
+* <a href="https://www.internet2.edu/products-services/advanced-networking/"  target="_blank"> Internet 2 Advanced Networking</a><br>
+* <a href="http://www.w3schools.com/html/html5_intro.asp"  target="_blank"> HTML5</a><br>
+* <a href="http://www.sublimetext.com/"  target="_blank"> Sublime Text (A Text editor for Javascript debugging; acknowledgement goes to Mr. Benjamin Stoltz)</a><br>
+* <a href="http://htmlcolorcodes.com/"  target="_blank"> Online Color Picker</a><br>
+* <a href="https://developer.mozilla.org/en-US/docs/Tools"  target="_blank"> Firefox Developer Tools</a> for debugging Javascript within web browsers<br>
+* <a href="https://developers.google.com/web/tools/chrome-devtools"  target="_blank"> Chrome DevTools</a> for debugging Javascript within web browsers<br>
+* <a href="https://www.layerstack.com/resources/tutorials/Installing-Apache-server-on-Linux-Cloud-Servers"  target="_blank"> Installing Apache HTTP Server</a><br>
+* <a href="https://code.visualstudio.com/"  target="_blank"> Visual Studio Code: Open Source IDE for programming</a><br>
+* <a href="https://github.com/"  target="_blank"> GitHub: online platform for software development and version control</a><br>
+* <a href="https://filezilla-project.org/"  target="_blank"> Filezilla: an open-source FTP software </a><br>
+* <a href="https://codepen.io/"  target="_blank"> CodePen: An Online Platform for Javascript Programming </a><br>
+* <a href="https://jsfiddle.net/"  target="_blank"> JSFiddle: An Online Platform for Javascript Programming </a><br>
+
+
+<h4>GIS Jobs</h4>
+* <a href="http://gjc.org/"  target="_blank"> GIS Jobs Clearing House</a><br>
+* <a href="https://www.indeed.com/q-GIS-l-Charlotte,-NC-jobs.html"  target="_blank"> Indeed</a><br>
+* <a href="https://jobs.aag.org/jobs/"  target="_blank"> Association of American Geographers</a><br>
+
+</p>
+<h4>Acknowledgement</h4>
+Amazon Web Services <br>
+
+<h4>Here We Are (Openlayers+OpenStreetMap)</h4>
+<div style="width:850px;" >
+       <div id="external_control" style="background-color:#e5dde4; color:black;border:1px solid black;padding:20px;width:200px; float: left;"></div>
+	   <div id="map" style="width:600px; height:350px;border:1px solid black; float: right;"></div>
+</div>
+</body>
+</html>
