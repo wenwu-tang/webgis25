@@ -41,6 +41,17 @@
         })
     });
 
+	var googlemap = new ol.layer.Tile({
+		title: 'Google Map',
+		type: 'base',
+		visible: true,
+		source: new ol.source.XYZ({
+			url: `https://mt{0-3}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&key=YOUR_GOOGLE_MAP_API_KEY`
+		})
+	});
+	//basegroup.getLayers().push(googlemap);
+
+	
 var state_boundaries = new ol.layer.Tile({
         title: 'state boundaries',
         visible: true,
@@ -91,7 +102,7 @@ var cities = new ol.layer.Tile({
 
   var map = new ol.Map({
         target: 'map',
-        //layers: [OSM, bing, state_boundaries, water_bodies, roads, cities],//
+        //layers: [OSM, googlemap, state_boundaries, water_bodies, roads, cities],//
 		layers: [OSM, bing,state_boundaries],
         view: new ol.View({
 		//projection: 'EPSG:3857'
