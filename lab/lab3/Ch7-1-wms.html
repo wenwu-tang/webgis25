@@ -34,7 +34,7 @@
 			})
         });	
 		*/
-		
+		/*
         var wms1 = new ol.layer.Tile({
 			title: 'States',
 			//extent: [-14392000, 2436200, -7279500, 6594375],
@@ -45,8 +45,8 @@
 				transition: 0
 			})
 		});
-
-        var wms2 = new ol.layer.Tile({
+		*/
+        var wms_elevation = new ol.layer.Tile({
 			title: 'Elevation',
 			//extent: [-14392000, 2436200, -7279500, 6594375],
 			source: new ol.source.TileWMS({
@@ -57,7 +57,7 @@
 			})
 		});
 
-	    var wms3 = new ol.layer.Tile({
+	    var wms_landcover = new ol.layer.Tile({
 			title: 'Land Cover',
 			//extent: [-14392000, 2436200, -7279500, 6594375],
 			source: new ol.source.TileWMS({
@@ -70,7 +70,7 @@
 	  
         var group = new ol.layer.Group({
 			'title': 'Base maps',
-			layers: [osm, bing]
+			layers: [osm]
 	    });
 		//-80.73200, 35.306840
 		var latitude=35.306840;
@@ -79,7 +79,7 @@
 				
         var map = new ol.Map({
 			target: 'map',
-			layers: [group, wms1,wms2,wms3],
+			layers: [group, wms_elevation,wms_landcover],
 			view: new ol.View({
 				center: latlong,
 				zoom: 4
@@ -95,4 +95,5 @@
     </script>
 </body>
 </html>
+
 
