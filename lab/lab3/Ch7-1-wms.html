@@ -1,0 +1,96 @@
+<html>
+<head>
+    <title>Chapter 7: Web-based Mapping Using OpenLayers </title>
+	
+	<script src="https://cdn.jsdelivr.net/npm/ol@v10.2.1/dist/ol.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.2.1/ol.css">
+	
+	<link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/src/ol-layerswitcher.css"/>
+	<link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/examples/layerswitcher.css" />
+    <script src="https://rawgit.com/walkermatt/ol-layerswitcher/master/dist/ol-layerswitcher.js"></script>		
+</head>
+  
+<body>
+	<h3>Chapter 7: Web-based Mapping Using OpenLayers</h3>
+	<h4>Author: YOUR NAME HERE</h4>
+    <div id="map" class="map", style = "width:100%; height: 100%"></div>
+	
+    <script>
+           	  
+        var osm = new ol.layer.Tile({
+			title: 'OpenStreetMap',
+			type: 'base',
+			visible: true,
+			source: new ol.source.OSM()
+		});
+		
+        var bing = new ol.layer.Tile({
+			title: 'Bing Map',
+			type: 'base',
+			visible: false,
+			source: new ol.source.BingMaps({
+				key: 'AvaGM7j2D9gs32ETYZ6JRReFZb8sdB8mXJTKUfzoNIXH_wYwBa03sDOQ54_ci_ZI',
+				imagerySet: 'Aerial'
+			})
+        });	
+		
+        var wms1 = new ol.layer.Tile({
+			title: 'States',
+			//extent: [-14392000, 2436200, -7279500, 6594375],
+			source: new ol.source.TileWMS({
+				url: 'http://jade.uncc.edu:8080/geoserver/wms',
+				params: {'LAYERS': 'topp:states', 'TILED': true},
+				serverType: 'geoserver',
+				transition: 0
+			})
+		});
+
+        var wms2 = new ol.layer.Tile({
+			title: 'Elevation',
+			//extent: [-14392000, 2436200, -7279500, 6594375],
+			source: new ol.source.TileWMS({
+				url: 'https://elevation.nationalmap.gov/arcgis/services/3DEPElevation/ImageServer/WMSServer',
+				params: {'LAYERS': '3DEPElevation:Hillshade Elevation Tinted', 'TILED': true},
+				//serverType: 'geoserver',
+				transition: 0
+			})
+		});
+
+	    var wms3 = new ol.layer.Tile({
+			title: 'Land Cover',
+			//extent: [-14392000, 2436200, -7279500, 6594375],
+			source: new ol.source.TileWMS({
+				url: 'https://www.mrlc.gov/geoserver/mrlc_display/NLCD_2021_Land_Cover_L48/wms',
+				params: {'LAYERS': 'NLCD_2021_Land_Cover_L48', 'TILED': true},
+				//serverType: 'geoserver',
+				transition: 0
+			})
+		});
+	  
+        var group = new ol.layer.Group({
+			'title': 'Base maps',
+			layers: [osm, bing]
+	    });
+		//-80.73200, 35.306840
+		var latitude=35.306840;
+		var longitude=-80.73200;
+		var latlong=ol.proj.fromLonLat([longitude,latitude]);
+				
+        var map = new ol.Map({
+			target: 'map',
+			layers: [group, wms1,wms2,wms3],
+			view: new ol.View({
+				center: latlong,
+				zoom: 4
+			})
+		});	
+			
+        var layerSwitcher = new ol.control.LayerSwitcher({
+			tipLabel: 'Legend' // Optional label for button
+		});
+	  
+        map.addControl(layerSwitcher);
+	    	
+    </script>
+</body>
+</html>

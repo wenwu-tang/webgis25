@@ -1,0 +1,138 @@
+<html>
+<head>
+    <title>Lab3:Web-based Mapping Using OpenLayers </title>
+	
+	<script src="https://cdn.jsdelivr.net/npm/ol@v10.2.1/dist/ol.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.2.1/ol.css">
+	
+	<link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/src/ol-layerswitcher.css"/>
+	<link rel="stylesheet" href="https://rawgit.com/walkermatt/ol-layerswitcher/master/examples/layerswitcher.css" />
+    <script src="https://rawgit.com/walkermatt/ol-layerswitcher/master/dist/ol-layerswitcher.js"></script>		
+</head>
+  
+<body>
+	<h3>Chapter 7: Web-based Mapping Using OpenLayers</h3>
+	<h4>Author: YOUR NAME HERE</h4>
+    <div id="map" class="map", style = "width:100%; height: 100%"></div>
+	
+    <script>
+           	  
+        var osm = new ol.layer.Tile({
+			title: 'OSM',
+			type: 'base',
+			visible: true,
+			source: new ol.source.OSM()
+		});
+		
+        var bing = new ol.layer.Tile({
+			title: 'Bing Map',
+			type: 'base',
+			visible: false,
+			source: new ol.source.BingMaps({
+				key: 'AvaGM7j2D9gs32ETYZ6JRReFZb8sdB8mXJTKUfzoNIXH_wYwBa03sDOQ54_ci_ZI',
+				imagerySet: 'Aerial'
+			})
+        });	
+		
+        var wms = new ol.layer.Tile({
+			title: 'States',
+			//extent: [-14392000, 2436200, -7279500, 6594375],
+			source: new ol.source.TileWMS({
+				url: 'http://jade.uncc.edu:8080/geoserver/wms',
+				params: {'LAYERS': 'topp:states', 'TILED': true},
+				serverType: 'geoserver',
+				transition: 0
+			})
+		});
+		
+		var wms1 = new ol.layer.Tile({
+			title: 'Elevation',
+			//extent: [-14392000, 2436200, -7279500, 6594375],
+			source: new ol.source.TileWMS({
+				url: 'https://elevation.nationalmap.gov/arcgis/services/3DEPElevation/ImageServer/WMSServer',
+				params: {'LAYERS': '3DEPElevation:Hillshade Elevation Tinted', 'TILED': true},
+				//serverType: 'geoserver',
+				transition: 0
+			})
+		});
+
+	    var wms2 = new ol.layer.Tile({
+			title: 'Land Cover',
+			//extent: [-14392000, 2436200, -7279500, 6594375],
+			source: new ol.source.TileWMS({
+				url: 'https://www.mrlc.gov/geoserver/mrlc_display/NLCD_2021_Land_Cover_L48/wms',
+				params: {'LAYERS': 'NLCD_2021_Land_Cover_L48', 'TILED': true},
+				//serverType: 'geoserver',
+				transition: 0
+			})
+		});
+		
+		// Step 2: Create a vector source for GeoJSON from a URL
+        var geojsonSource = new ol.source.Vector({
+            url: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson',  // Example URL to GeoJSON
+            format: new ol.format.GeoJSON()
+        });
+
+        // Step 3: Create a vector layer to display the GeoJSON data
+        var geojsonLayer = new ol.layer.Vector({
+			title: 'Earthquake',
+            source: geojsonSource,
+            style: new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 5,
+                    fill: new ol.style.Fill({ color: 'red' }),
+                    stroke: new ol.style.Stroke({
+                        color: 'black',
+                        width: 1
+                    })
+                })
+            })
+        });
+		
+		var geojsonSource1 = new ol.source.Vector({
+            url: 'https://raw.githubusercontent.com/PublicaMundi/MappingAPI/refs/heads/master/data/geojson/us-states.json',  // Example URL to GeoJSON
+            format: new ol.format.GeoJSON()
+        });
+		
+		//from ChatGPT  // Step 3: Define a style with transparent fill and a colored stroke
+        var polygonStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 255, 255, 0)'  // Fully transparent fill (rgba(255, 255, 255, 0))
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#FF0000',  // Red border
+                width: 2
+            })
+        });
+				
+		var geojsonLayer1 = new ol.layer.Vector({
+			title: 'US States',
+			source: geojsonSource1,
+			style: polygonStyle
+        });
+			  
+        var group = new ol.layer.Group({
+			'title': 'Base maps',
+			layers: [osm, bing]
+	    });
+				
+		var latitude=35.306840;
+		var longitude=-80.73200;
+		var longlat=ol.proj.fromLonLat([longitude,latitude]);
+        var map = new ol.Map({
+			target: 'map',
+			layers: [group, wms,wms1,wms2,geojsonLayer,geojsonLayer1],
+			view: new ol.View({
+				center: longlat,
+				zoom: 4
+			})
+		});	
+			
+        var layerSwitcher = new ol.control.LayerSwitcher({
+			tipLabel: 'Legend' // Optional label for button
+		});
+	  
+        map.addControl(layerSwitcher);
+    </script>
+</body>
+</html>
